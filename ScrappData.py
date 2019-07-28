@@ -19,7 +19,7 @@ db = client.otomoto
 offers = db.offers
 print(client.list_database_names())
 
-url = ''
+url = 'https://www.otomoto.pl/osobowe/?search%5Border%5D=created_at_first%3Adesc&search%5Bbrand_program_id%5D%5B0%5D=&search%5Bcountry%5D=&page='
 link_items_as_href = ['Oferta od', 'Kategoria', 'Marka pojazdu', 'Model pojazdu', 'Rodzaj paliwa', 'Napęd', 'Typ', 'Kolor',
                       'Metalik', 'Perłowy', 'VAT marża', 'Kraj pochodzenia', 'Pierwszy właściciel', 'Serwisowany w ASO', 'Stan',
                       'Wersja', 'Skrzynia biegów', 'Bezwypadkowy', 'Akryl (niemetalizowany)', 'Faktura VAT', 'Zarejestrowany w Polsce',
@@ -47,7 +47,7 @@ for page in range(1, pages):
         link_id = link_date_and_id[1].text.strip()
         print(link_id)
         if (offers.find_one({'otomoto_id': link_id})):
-            print('NOT SAVED')
+            print('Offer not saved')
             continue
 
         link_date = link_date_and_id[0].text.strip()
@@ -124,7 +124,7 @@ for page in range(1, pages):
                           'Url': link_url,
                           'Opis': description})
         offers.insert_one(db_record)
-        print('Saved')
+        print('Offer Saved')
         count += 1
         print(count)
         time.sleep(0.5)
