@@ -49,3 +49,83 @@ for page in range(1, pages):
         if (offers.find_one({'otomoto_id': link_id})):
             print('NOT SAVED')
             continue
+
+        link_date = link_date_and_id[0].text.strip()
+        print(link_date)
+
+        location = content.find(
+            'span', class_='offer-item__location').h4.text.split('(')
+        city = location[0].strip()
+        state = location[1].replace(')', '').strip()
+        print(city)
+        print(state)
+
+        price = content.find('span', class_='offer-price__number').text.replace(
+            'PLN', '').replace(' ', '').replace('\n', '')
+        print(price)
+
+        if ('EUR' in price):
+            price = int(float(price.replace('EUR', '').replace(',', '.'))*4.26)
+        elif ('USD' in price):
+            price = int(float(price.replace('USD', '').replace(',', '.'))*3.82)
+        else:
+            price = int(float(price.replace(',', '.')))
+
+        link_items = link_soup.findAll('li', class_='offer-params__item')
+
+        for link_item in link_items:
+            key = link_item.span.text.strip()
+            value = link_item.div
+            print(key)
+
+            if (key in link_items_as_href):
+                print(value.a.text.strip())
+                if (value.a.text.strip() == 'Tak'):
+                    db_record.update({key: 1})
+                else:
+                    db_record.update({key: value.a.text.strip()})
+            else:
+                print(value.text.strip())
+                if (key == 'Przebieg'):
+                    db_record.update(
+                        {key: int(value.text.replace('km', '').replace(' ', '').replace('\n', ''))})
+                elif (key == 'Pojemność skokowa'):
+                    db_record.update(
+                        {key: int(value.text.replace('cm3', '').replace(' ', '').replace('\n', ''))})
+                elif (key == 'Moc'):
+                    db_record.update(
+                        {key: int(value.text.replace('KM', '').replace(' ', '').replace('\n', ''))})
+                elif (key == 'Emisja CO2'):
+                    db_record.update(
+                        {key: int(value.text.replace('g/km', '').replace(' ', '').replace('\n', ''))})
+                elif (key in convert_to_int):
+                    db_record.update({key: int(value.text.strip())})
+                else:
+                    db_record.update({key: value.text.strip()})
+
+        features = link_soup.find('div', class_='offer-features')
+        if (features != None):
+            features = features.findAll('li', class_='offer-features__item')
+            for feature in features:
+                feature = 'Wyposażenie: ' + feature.text.strip()
+                print(feature)
+                db_record.update({feature: 1})
+
+        description = link_soup.find(
+            'div', class_='offer-description').div.text.strip()
+        print(description)
+        print(link_url)
+
+        db_record.update({'Otomoto id': link_id,
+                          'Data publikacji': link_date,
+                          'Cena': price,
+                          'Miasto': city,
+                          'Wojewodztwo': state,
+                          'Url': link_url,
+                          'Opis': description})
+        offers.insert_one(db_record)
+        print('saved!')
+        count += 1
+        print(count)
+        time.sleep(0.5)
+print('Scrapping ended')
