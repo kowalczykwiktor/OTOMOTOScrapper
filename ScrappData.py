@@ -124,7 +124,7 @@ for page in range(1, pages):
                           'Url': link_url,
                           'Opis': description})
         offers.insert_one(db_record)
-        print('saved!')
+        print('Saved')
         count += 1
         print(count)
         time.sleep(0.5)
