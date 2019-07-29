@@ -1,7 +1,8 @@
 # ./SynologyDrive/Repository/OTOMOTOScrapper
 
 # pip install -U pandas
-# pip install -U matplotlib.pyplot
+# pip install -U matplotlib
+# pip install -U sklearn
 
 from pymongo import MongoClient
 import pandas as pd
