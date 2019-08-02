@@ -41,7 +41,7 @@ for page in range(1, pages):
         link_soup = BeautifulSoup(link_response.text, 'html.parser')
         try:
             link_date_and_id = link_soup.find(
-            'div', class_='offer-content__rwd-metabar').findAll('span', class_='offer-meta__value')
+                'div', class_='offer-content__rwd-metabar').findAll('span', class_='offer-meta__value')
         except AttributeError as ServiceError:
             continue
         link_id = link_date_and_id[1].text.strip()
@@ -51,8 +51,11 @@ for page in range(1, pages):
             continue
         link_date = link_date_and_id[0].text.strip()
         print(link_date)
-        location = content.find(
-            'span', class_='offer-item__location').h4.text.split('(')
+        try:
+            location = content.find(
+                'span', class_='offer-item__location').h4.text.split('(')
+        except AttributeError as ServiceError:
+            continue
         city = location[0].strip()
         state = location[1].replace(')', '').strip()
         print(city)
