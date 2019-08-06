@@ -30,6 +30,10 @@ list_of_columns = ['Akryl (niemetalizowany)', 'Bezwypadkowy', 'Emisja CO2', 'Fak
 columns_list_not_to_be_used = ['_id', 'Data publikacji', 'Liczba pozostałych rat', 'Miesięczna rata', 'Numer rejestracyjny pojazdu',
                                'VIN', 'Kod Silnika', 'Opis', 'Opłata początkowa', 'Otomoto id', 'Pierwsza rejestracja', 'Url', 'Wartość wykupu']
 label = df['Cena']
+
+df['Akryl (niemetalizowany)'] = df['Akryl (niemetalizowany)'].astype('int')
+df['Matowy'] = df['Matowy'].astype('int')
+df['Metalik'] = df['Metalik'].astype('int')
 for column in categorical_columns:
     # column = column.decode('utf-8')
     unique_values = list(set(df[column]))
@@ -37,10 +41,8 @@ for column in categorical_columns:
     for value in unique_values:
         mapping.update({value: unique_values.index(value)})
     df[column] = df[column].replace(mapping)
-df['Akryl (niemetalizowany)'] = df['Akryl (niemetalizowany)'].replace({u'acrylic': 1})
-df['Matowy'] = df['Matowy'].replace({u'matt': 1})
-df['Metalik'] = df['Metalik'].replace({u'metallic': 1})
-final_columns_list = map(lambda column: column.decode('utf-8'), list_of_columns + categorical_columns)
+final_columns_list = map(lambda column: column.decode(
+    'utf-8'), list_of_columns + categorical_columns)
 train_data = df[final_columns_list]
 x_train, x_test, y_train, y_test = train_test_split(
     train_data, label, test_size=0.1, random_state=2)
