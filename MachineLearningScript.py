@@ -20,7 +20,9 @@ client = MongoClient(
     'mongodb+srv://wiktorkowalczyk:pjatk2019@cluster0-bqxx3.mongodb.net/')
 db = client.otomoto
 offers = db.offers
-
+print('/////////////////////////////////////////////////..::Connection Successfully::../////////////////////////////////////////////////////')
+print(client.list_database_names())
+print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>..::MachineLearning started::..<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
 df = pd.DataFrame(list(offers.find())).fillna(0)
 columns_list = df.columns.tolist()
 categorical_columns = ['Marka pojazdu', 'Model pojazdu', 'Kategoria', 'Kolor', 'Kraj pochodzenia', 'Napęd',
@@ -30,7 +32,17 @@ list_of_columns = ['Akryl (niemetalizowany)', 'Bezwypadkowy', 'Emisja CO2', 'Fak
 columns_list_not_to_be_used = ['_id', 'Data publikacji', 'Liczba pozostałych rat', 'Miesięczna rata', 'Numer rejestracyjny pojazdu',
                                'VIN', 'Kod Silnika', 'Opis', 'Opłata początkowa', 'Otomoto id', 'Pierwsza rejestracja', 'Url', 'Wartość wykupu']
 label = df['Cena']
+for item in df['Akryl (niemetalizowany)']:
+    if isinstance(item, str):
+        df = df.replace(item, '1')
 
+for item in df['Matowy']:
+    if isinstance(item, str):
+        df = df.replace(item, '1')
+
+for item in df['Metalik']:
+    if isinstance(item, str):
+        df = df.replace(item, '1')
 df['Akryl (niemetalizowany)'] = df['Akryl (niemetalizowany)'].astype('int')
 df['Matowy'] = df['Matowy'].astype('int')
 df['Metalik'] = df['Metalik'].astype('int')
@@ -94,11 +106,12 @@ random_forest_regressor = RandomForestRegressor(
     max_depth=5, random_state=0, n_estimators=100)
 random_forest_regressor.fit(x_train, y_train)
 rf_score_1 = random_forest_regressor.score(x_test, y_test)
-print('RandomForestRegressor(max_depth=5, random_state=0, n_estimators=100) score: ' + str(rf_score_1))
+print('RandomForestRegressor No2 score: ' + str(rf_score_1))
 
 # RandomForestRegressor No3:
 random_forest_regressor = RandomForestRegressor(
     max_depth=200, random_state=100, n_estimators=50)
 random_forest_regressor.fit(x_train, y_train)
 rf_score_2 = random_forest_regressor.score(x_test, y_test)
-print('RandomForestRegressor(max_depth=200, random_state=100, n_estimators=50) score: ' + str(rf_score_2))
+print('RandomForestRegressor No3 score: ' + str(rf_score_2))
+print('////////////////////////////////////////////////..::MachineLearning ended::..///////////////////////////////////////////////////////')
