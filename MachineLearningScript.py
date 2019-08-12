@@ -54,7 +54,8 @@ for column in categorical_columns:
         mapping.update({value: unique_values.index(value)})
     df[column] = df[column].replace(mapping)
 final_columns_list = map(lambda column: column, list_of_columns + categorical_columns)
-train_data = df[final_columns_list]
+# train_data = df[column].reindex(columns=final_columns_list)
+train_data = df[final_columns_list] 
 x_train, x_test, y_train, y_test = train_test_split(
     train_data, label, test_size=0.1, random_state=2)
 
