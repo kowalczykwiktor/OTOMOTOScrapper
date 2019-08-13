@@ -19,6 +19,7 @@ from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.ensemble import BaggingRegressor
 from datetime import datetime
 from warnings import simplefilter
+
 simplefilter(action='ignore', category=FutureWarning)
 startTime = datetime.now()
 client = MongoClient(
@@ -37,11 +38,9 @@ label = df['Cena']
 for item in df['Akryl (niemetalizowany)']:
     if isinstance(item, str):
         df = df.replace(item, '1')
-
 for item in df['Matowy']:
     if isinstance(item, str):
         df = df.replace(item, '1')
-
 for item in df['Metalik']:
     if isinstance(item, str):
         df = df.replace(item, '1')
@@ -49,17 +48,13 @@ df['Akryl (niemetalizowany)'] = df['Akryl (niemetalizowany)'].astype('int')
 df['Matowy'] = df['Matowy'].astype('int')
 df['Metalik'] = df['Metalik'].astype('int')
 for column in categorical_columns:
-    # column = column.decode('utf-8')
     unique_values = list(set(df[column]))
     mapping = {}
     for value in unique_values:
         mapping.update({value: unique_values.index(value)})
     df[column] = df[column].replace(mapping)
-# final_columns_list = map(lambda column: column, list_of_columns + categorical_columns)
 final_columns_list = list_of_columns + categorical_columns
 train_data = df[final_columns_list]
-# train_data = df[column].reindex(columns=final_columns_list)
-# train_data = df[final_columns_list] 
 x_train, x_test, y_train, y_test = train_test_split(
     train_data, label, test_size=0.1, random_state=2)
 

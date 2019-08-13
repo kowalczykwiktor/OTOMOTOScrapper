@@ -13,6 +13,7 @@ import time
 from bs4 import BeautifulSoup
 import pymongo
 from pymongo import MongoClient
+
 client = MongoClient(
     'mongodb+srv://wiktorkowalczyk:pjatk2019@cluster0-bqxx3.mongodb.net/')
 db = client.otomoto
