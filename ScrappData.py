@@ -20,6 +20,7 @@ offers = db.offers
 print('/////////////////////////////////////////////////..::Connection Successfully::../////////////////////////////////////////////////////')
 print('Available databases:')
 print(client.list_database_names())
+print('/////////////////////////////////////////////////..::Scraping started::../////////////////////////////////////////////////////')
 url = 'https://www.otomoto.pl/osobowe/?search%5Border%5D=created_at_first%3Adesc&search%5Bbrand_program_id%5D%5B0%5D=&search%5Bcountry%5D=&page='
 link_items_as_href = ['Oferta od', 'Kategoria', 'Marka pojazdu', 'Model pojazdu', 'Rodzaj paliwa', 'Napęd', 'Typ', 'Kolor',
                       'Metalik', 'Perłowy', 'VAT marża', 'Kraj pochodzenia', 'Pierwszy właściciel', 'Serwisowany w ASO', 'Stan',
@@ -122,4 +123,4 @@ for page in range(1, pages):
         count += 1
         print(count)
         time.sleep(0.5)
-print('////////////////////////////////////////////////..::Scrapping ended::..///////////////////////////////////////////////////////')
+print('////////////////////////////////////////////////..::Scraping ended::..///////////////////////////////////////////////////////')

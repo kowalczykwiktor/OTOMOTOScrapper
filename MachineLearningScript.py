@@ -118,6 +118,6 @@ random_forest_regressor = RandomForestRegressor(
 random_forest_regressor.fit(x_train, y_train)
 rf_score_2 = random_forest_regressor.score(x_test, y_test)
 print('RandomForestRegressor No3 score: ' + str(rf_score_2))
-print('////////////////////////////////////////////////..::Machine Learning ended::..///////////////////////////////////////////////////////')
+print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>..::Machine Learning ended::..<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
 print('Process time:')
 print(datetime.now() - startTime)
