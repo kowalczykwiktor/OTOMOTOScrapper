@@ -1,12 +1,12 @@
 # ./SynologyDrive/Repository/OTOMOTOScrapper
 
-# pip install -U pip
+# pip3 install -U pip
 
-# pip install -U requests
-# pip install -U time
-# pip install -U bs4
-# pip install -U pymongo
-# pip install -U dnspython
+# pip3 install -U requests
+# pip3 install -U time
+# pip3 install -U bs4
+# pip3 install -U pymongo
+# pip3 install -U dnspython
 
 import requests
 import time
@@ -18,6 +18,7 @@ client = MongoClient(
 db = client.otomoto
 offers = db.offers
 print('/////////////////////////////////////////////////..::Connection Successfully::../////////////////////////////////////////////////////')
+print('Available databases:')
 print(client.list_database_names())
 url = 'https://www.otomoto.pl/osobowe/?search%5Border%5D=created_at_first%3Adesc&search%5Bbrand_program_id%5D%5B0%5D=&search%5Bcountry%5D=&page='
 link_items_as_href = ['Oferta od', 'Kategoria', 'Marka pojazdu', 'Model pojazdu', 'Rodzaj paliwa', 'Napęd', 'Typ', 'Kolor',
