@@ -1,8 +1,9 @@
 # ./SynologyDrive/Repository/OTOMOTOScrapper
 
-# pip install -U pandas
-# pip install -U matplotlib
-# pip install -U sklearn
+# pip3 install -U pandas
+# pip3 install -U matplotlib
+# pip3 install -U sklearn
+# pip3 install -U simplefilter
 
 from pymongo import MongoClient
 import pandas as pd
@@ -16,21 +17,22 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.ensemble import BaggingRegressor
+from datetime import datetime
+from warnings import simplefilter
+simplefilter(action='ignore', category=FutureWarning)
+startTime = datetime.now()
 client = MongoClient(
     'mongodb+srv://wiktorkowalczyk:pjatk2019@cluster0-bqxx3.mongodb.net/')
 db = client.otomoto
 offers = db.offers
 print('/////////////////////////////////////////////////..::Connection Successfully::../////////////////////////////////////////////////////')
+print('Available databases:')
 print(client.list_database_names())
-print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>..::MachineLearning started::..<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
+print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>..::Machine Learning started::..<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
 df = pd.DataFrame(list(offers.find())).fillna(0)
 columns_list = df.columns.tolist()
-categorical_columns = ['Marka pojazdu', 'Model pojazdu', 'Kategoria', 'Kolor', 'Kraj pochodzenia', 'Napęd',
-                       'Oferta od', 'Rodzaj paliwa', 'Skrzynia biegów', 'Stan', 'Typ', 'Wersja', 'Miasto', 'Wojewodztwo']
-list_of_columns = ['Akryl (niemetalizowany)', 'Bezwypadkowy', 'Emisja CO2', 'Faktura VAT', 'Filtr cząstek stałych', 'Leasing', 'Homologacja ciężarowa', 'Kierownica po prawej (Anglik)', 'Liczba drzwi', 'Liczba miejsc', 'Metalik', 'Matowy', 'Moc', 'Możliwość finansowania', 'Perłowy', 'Pierwszy właściciel', 'Pojemność skokowa', 'Przebieg', 'Rok produkcji', 'Serwisowany w ASO', 'Tuning', 'Uszkodzony', 'VAT marża', 'Wyposażenie: ABS', 'Wyposażenie: ASR (kontrola trakcji)', 'Wyposażenie: Alarm', 'Wyposażenie: Alufelgi', 'Wyposażenie: Isofix', 'Wyposażenie: Asystent parkowania', 'Wyposażenie: Asystent pasa ruchu', 'Wyposażenie: Bluetooth', 'Wyposażenie: MP3', 'Wyposażenie: CD', 'Wyposażenie: Centralny zamek', 'Wyposażenie: Czujnik deszczu', 'Wyposażenie: Hak', 'Wyposażenie: Czujnik martwego pola', 'Wyposażenie: Czujnik zmierzchu', 'Wyposażenie: Czujniki parkowania przednie', 'Wyposażenie: Czujniki parkowania tylne', 'Wyposażenie: Dach panoramiczny', 'Wyposażenie: ESP (stabilizacja toru jazdy)', 'Wyposażenie: Elektrochromatyczne lusterka boczne', 'Wyposażenie: Elektrochromatyczne lusterko wsteczne', 'Wyposażenie: Elektryczne szyby przednie', 'Wyposażenie: Elektryczne szyby tylne', 'Wyposażenie: Gniazdo USB', 'Wyposażenie: Elektrycznie ustawiane fotele', 'Wyposażenie: Elektrycznie ustawiane lusterka', 'Wyposażenie: Gniazdo AUX', 'Wyposażenie: Gniazdo SD', 'Wyposażenie: HUD (wyświetlacz przezierny)', 'Wyposażenie: Immobilizer', 'Wyposażenie: Kamera cofania', 'Wyposażenie: Klimatyzacja automatyczna',
-                   'Wyposażenie: Klimatyzacja czterostrefowa', 'Wyposażenie: Klimatyzacja dwustrefowa', 'Wyposażenie: Klimatyzacja manualna', 'Wyposażenie: Komputer pokładowy', 'Wyposażenie: Kurtyny powietrzne', 'Wyposażenie: Nawigacja GPS', 'Wyposażenie: Odtwarzacz DVD', 'Zarejestrowany w Polsce', 'Wyposażenie: Ogranicznik prędkości', 'Wyposażenie: Ogrzewanie postojowe', 'Wyposażenie: Podgrzewana przednia szyba', 'Wyposażenie: Podgrzewane lusterka boczne', 'Wyposażenie: Podgrzewane przednie siedzenia', 'Wyposażenie: Radio fabryczne', 'Wyposażenie: Podgrzewane tylne siedzenia', 'Wyposażenie: Poduszka powietrzna chroniąca kolana', 'Wyposażenie: Tuner TV', 'Wyposażenie: Poduszka powietrzna kierowcy', 'Wyposażenie: Poduszka powietrzna pasażera', 'Wyposażenie: Przyciemniane szyby', 'Wyposażenie: Poduszki boczne przednie', 'Wyposażenie: Poduszki boczne tylne', 'Wyposażenie: Radio niefabryczne', 'Wyposażenie: Regulowane zawieszenie', 'Wyposażenie: Relingi dachowe', 'Wyposażenie: System Start-Stop', 'Wyposażenie: Szyberdach', 'Wyposażenie: Tapicerka skórzana', 'Wyposażenie: Tapicerka welurowa', 'Wyposażenie: Tempomat', 'Wyposażenie: Tempomat aktywny', 'Wyposażenie: Wielofunkcyjna kierownica', 'Wyposażenie: Wspomaganie kierownicy', 'Wyposażenie: Zmieniarka CD', 'Wyposażenie: Łopatki zmiany biegów', 'Wyposażenie: Światła LED', 'Wyposażenie: Światła Xenonowe', 'Wyposażenie: Światła do jazdy dziennej', 'Wyposażenie: Światła przeciwmgielne', 'Zarejestrowany jako zabytek']
-columns_list_not_to_be_used = ['_id', 'Data publikacji', 'Liczba pozostałych rat', 'Miesięczna rata', 'Numer rejestracyjny pojazdu',
-                               'VIN', 'Kod Silnika', 'Opis', 'Opłata początkowa', 'Otomoto id', 'Pierwsza rejestracja', 'Url', 'Wartość wykupu']
+categorical_columns = ['Marka pojazdu', 'Model pojazdu', 'Kategoria', 'Kolor', 'Kraj pochodzenia', 'Napęd', 'Oferta od', 'Rodzaj paliwa', 'Skrzynia biegów', 'Stan', 'Typ', 'Wersja', 'Miasto', 'Wojewodztwo']
+list_of_columns = ['Akryl (niemetalizowany)', 'Bezwypadkowy', 'Emisja CO2', 'Faktura VAT', 'Filtr cząstek stałych', 'Leasing', 'Homologacja ciężarowa', 'Kierownica po prawej (Anglik)', 'Liczba drzwi', 'Liczba miejsc', 'Metalik', 'Matowy', 'Moc', 'Możliwość finansowania', 'Perłowy', 'Pierwszy właściciel', 'Pojemność skokowa', 'Przebieg', 'Rok produkcji', 'Serwisowany w ASO', 'Tuning', 'Uszkodzony', 'VAT marża', 'Posiada: ABS', 'Posiada: ASR (kontrola trakcji)', 'Posiada: Alarm', 'Posiada: Alufelgi', 'Posiada: Isofix', 'Posiada: Asystent parkowania', 'Posiada: Asystent pasa ruchu', 'Posiada: Bluetooth', 'Posiada: MP3', 'Posiada: CD', 'Posiada: Centralny zamek', 'Posiada: Czujnik deszczu', 'Posiada: Hak', 'Posiada: Czujnik martwego pola', 'Posiada: Czujnik zmierzchu', 'Posiada: Czujniki parkowania przednie', 'Posiada: Czujniki parkowania tylne', 'Posiada: Dach panoramiczny', 'Posiada: ESP (stabilizacja toru jazdy)', 'Posiada: Elektrochromatyczne lusterka boczne', 'Posiada: Elektrochromatyczne lusterko wsteczne', 'Posiada: Elektryczne szyby przednie', 'Posiada: Elektryczne szyby tylne', 'Posiada: Gniazdo USB', 'Posiada: Elektrycznie ustawiane fotele', 'Posiada: Elektrycznie ustawiane lusterka', 'Posiada: Gniazdo AUX', 'Posiada: Gniazdo SD', 'Posiada: HUD (wyświetlacz przezierny)', 'Posiada: Immobilizer', 'Posiada: Kamera cofania', 'Posiada: Klimatyzacja automatyczna', 'Posiada: Klimatyzacja czterostrefowa', 'Posiada: Klimatyzacja dwustrefowa', 'Posiada: Klimatyzacja manualna', 'Posiada: Komputer pokładowy', 'Posiada: Kurtyny powietrzne', 'Posiada: Nawigacja GPS', 'Posiada: Odtwarzacz DVD', 'Zarejestrowany w Polsce', 'Posiada: Ogranicznik prędkości', 'Posiada: Ogrzewanie postojowe', 'Posiada: Podgrzewana przednia szyba', 'Posiada: Podgrzewane lusterka boczne', 'Posiada: Podgrzewane przednie siedzenia', 'Posiada: Radio fabryczne', 'Posiada: Podgrzewane tylne siedzenia', 'Posiada: Poduszka powietrzna chroniąca kolana', 'Posiada: Tuner TV', 'Posiada: Poduszka powietrzna kierowcy', 'Posiada: Poduszka powietrzna pasażera', 'Posiada: Przyciemniane szyby', 'Posiada: Poduszki boczne przednie', 'Posiada: Poduszki boczne tylne', 'Posiada: Radio niefabryczne', 'Posiada: Regulowane zawieszenie', 'Posiada: Relingi dachowe', 'Posiada: System Start-Stop', 'Posiada: Szyberdach', 'Posiada: Tapicerka skórzana', 'Posiada: Tapicerka welurowa', 'Posiada: Tempomat', 'Posiada: Tempomat aktywny', 'Posiada: Wielofunkcyjna kierownica', 'Posiada: Wspomaganie kierownicy', 'Posiada: Zmieniarka CD', 'Posiada: Łopatki zmiany biegów', 'Posiada: Światła LED', 'Posiada: Światła Xenonowe', 'Posiada: Światła do jazdy dziennej', 'Posiada: Światła przeciwmgielne', 'Zarejestrowany jako zabytek']
 label = df['Cena']
 for item in df['Akryl (niemetalizowany)']:
     if isinstance(item, str):
@@ -53,9 +55,11 @@ for column in categorical_columns:
     for value in unique_values:
         mapping.update({value: unique_values.index(value)})
     df[column] = df[column].replace(mapping)
-final_columns_list = map(lambda column: column, list_of_columns + categorical_columns)
+# final_columns_list = map(lambda column: column, list_of_columns + categorical_columns)
+final_columns_list = list_of_columns + categorical_columns
+train_data = df[final_columns_list]
 # train_data = df[column].reindex(columns=final_columns_list)
-train_data = df[final_columns_list] 
+# train_data = df[final_columns_list] 
 x_train, x_test, y_train, y_test = train_test_split(
     train_data, label, test_size=0.1, random_state=2)
 
@@ -114,4 +118,6 @@ random_forest_regressor = RandomForestRegressor(
 random_forest_regressor.fit(x_train, y_train)
 rf_score_2 = random_forest_regressor.score(x_test, y_test)
 print('RandomForestRegressor No3 score: ' + str(rf_score_2))
-print('////////////////////////////////////////////////..::MachineLearning ended::..///////////////////////////////////////////////////////')
+print('////////////////////////////////////////////////..::Machine Learning ended::..///////////////////////////////////////////////////////')
+print('Process time:')
+print(datetime.now() - startTime)
