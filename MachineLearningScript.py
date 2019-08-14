@@ -27,8 +27,7 @@ client = MongoClient(
 db = client.otomoto
 offers = db.offers
 print('/////////////////////////////////////////////////..::Connection Successfully::../////////////////////////////////////////////////////')
-print('Available databases:')
-print(client.list_database_names())
+print('Available databases:', client.list_database_names())
 print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>..::Machine Learning started::..<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
 df = pd.DataFrame(list(offers.find())).fillna(0)
 columns_list = df.columns.tolist()
@@ -114,5 +113,4 @@ random_forest_regressor.fit(x_train, y_train)
 rf_score_2 = random_forest_regressor.score(x_test, y_test)
 print('RandomForestRegressor No3 score: ' + str(rf_score_2))
 print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>..::Machine Learning ended::..<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
-print('Process time:')
-print(datetime.now() - startTime)
+print('Process time:', datetime.now() - startTime)

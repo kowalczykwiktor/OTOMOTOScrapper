@@ -19,8 +19,7 @@ client = MongoClient(
 db = client.otomoto
 offers = db.offers
 print('/////////////////////////////////////////////////..::Connection Successfully::../////////////////////////////////////////////////////')
-print('Available databases:')
-print(client.list_database_names())
+print('Available databases:', client.list_database_names())
 print('/////////////////////////////////////////////////..::Scraping started::../////////////////////////////////////////////////////')
 url = 'https://www.otomoto.pl/osobowe/?search%5Border%5D=created_at_first%3Adesc&search%5Bbrand_program_id%5D%5B0%5D=&search%5Bcountry%5D=&page='
 link_items_as_href = ['Oferta od', 'Kategoria', 'Marka pojazdu', 'Model pojazdu', 'Rodzaj paliwa', 'Napęd', 'Typ', 'Kolor',
